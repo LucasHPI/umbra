@@ -110,29 +110,28 @@ jobs:
         id: assume-role
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-role-to-assume: ${{ secrets.IAM_ROLE }}
+          role-to-assume: ${{ secrets.IAM_ROLE }}
           aws-region: us-east-1
           role-duration-seconds: 1200
-      
+
       - name: Downloading Artifacts
         uses: actions/download-artifact@v2
         with: 
           name: ${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip
           path: node/${{ matrix/lambdas }}
-      
+
       - name: Terraform Init
         run: |
           terraform init -backend-config "bucket=parallax-umbra-terraform-state-${{ env.env_name }}" -backend-config "dynamodb_table=parallax-umbra-terraform-lock-${{ env.env_name }}"
-  
+
       - name: Terraform Validate
         run: |
           terraform validate
-  
+
       - name: Terraform Plan
         run: |
           terraform plan --out=tfplan -var lambdas_version="${{ needs.GetUniqueIdentifier.outputs.timestamp }}"
-      
+
       - name: Terraform Apply
         run: |
           terraform apply "tfplan"
-  

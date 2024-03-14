@@ -45,7 +45,7 @@ jobs:
         id: assume-role
         uses: aws-actions/configure-aws-credentials@v2
         with:
-          aws-role-to-assume: ${{ secrets.IAM_ROLE }}
+          role-to-assume: ${{ secrets.IAM_ROLE }}
           aws-region: us-east-1
           role-duration-seconds: 1200
       - name: Setup Terraform
