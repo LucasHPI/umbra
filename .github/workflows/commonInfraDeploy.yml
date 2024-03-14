@@ -58,9 +58,7 @@ jobs:
         with:
           terraform_version: 1.1.0
       - name: Terraform Init
-        run: terraform init -backend-config "bucket=parallax-umbra-terraform-state-${{
-          env.env_name }}" -backend-config
-          "dynamodb_table=parallax-umbra-terraform-lock-${{ env.env_name }}"
+        run: terraform init -backend-config "bucket=parallax-umbra-terraform-state-${{ env.env_name }}" -backend-config "dynamodb_table=parallax-umbra-terraform-lock-${{ env.env_name }}" -backend-config="access_key=${{ steps.assume-role.outputs.AWS_ACCESS_KEY_ID }}" -backend-config="secret_key=${{ steps.assume-role.outputs.AWS_SECRET_ACCESS_KEY }}"
       - name: Terraform Plan
         run: terraform plan -input=false -out=./tfplan
       - name: Terraform Apply
