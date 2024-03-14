@@ -4,7 +4,7 @@ on:
     branches:
       - devl
     paths:
-      - commonInfra/**
+      - common-infra/**
 env:
   env_name: devl
 jobs:
