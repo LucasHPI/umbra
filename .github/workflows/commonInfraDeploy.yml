@@ -62,7 +62,7 @@ jobs:
           env.env_name }}" -backend-config
           "dynamodb_table=parallax-umbra-terraform-lock-${{ env.env_name }}"
       - name: Terraform Plan
-        run: terraform plan -input=false -out=./tfplan && \
+        run: terraform plan -input=false -out=./tfplan
       - name: Terraform Apply
         run: terraform apply -auto-approve -input=false ./tfplan
         env:
