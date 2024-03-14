@@ -7,6 +7,10 @@ on:
     paths:
       - node/**
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   env_name: "devl"
 

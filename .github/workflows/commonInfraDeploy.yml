@@ -5,6 +5,11 @@ on:
       - devl
     paths:
       - common-infra/**
+
+permissions:
+  id-token: write
+  contents: read
+  
 env:
   env_name: devl
 jobs:
