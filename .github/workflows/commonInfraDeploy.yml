@@ -9,7 +9,7 @@ on:
 permissions:
   id-token: write
   contents: read
-  
+
 env:
   env_name: devl
 jobs:
@@ -42,7 +42,7 @@ jobs:
         commonInfra: ${{ fromJson(needs.setup.outputs.folder-matrix) }}
     defaults:
       run:
-        working-directory: commonInfra/${{ matrix.commonInfra }}
+        working-directory: ${{ matrix.commonInfra }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
