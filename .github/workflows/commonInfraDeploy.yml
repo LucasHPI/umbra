@@ -9,7 +9,7 @@ on:
 permissions:
   id-token: write
   contents: read
-  
+
 env:
   env_name: devl
 jobs:
@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Assume IAM role
         id: assume-role
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: ${{ secrets.IAM_ROLE }}
           aws-region: us-east-1
@@ -59,6 +59,10 @@ jobs:
           terraform_version: 1.1.0
       - name: Terraform Init
         run: terraform init -backend-config "bucket=parallax-umbra-terraform-state-${{ env.env_name }}" -backend-config "dynamodb_table=parallax-umbra-terraform-lock-${{ env.env_name }}"
+        env:
+          AWS_ACCESS_KEY_ID: ${{ steps.assume-role.outputs.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ steps.assume-role.outputs.AWS_SECRET_ACCESS_KEY }}
+          AWS_SESSION_TOKEN: ${{ steps.assume-role.outputs.AWS_SESSION_TOKEN }}
       - name: Terraform Plan
         run: terraform plan -input=false -out=./tfplan
       - name: Terraform Apply
