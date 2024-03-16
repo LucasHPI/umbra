@@ -18,7 +18,7 @@ jobs:
   GetUniqueIdentifier:
     runs-on: [ubuntu-latest]
     outputs:
-      timestamp: ${{ steps-set-unique-identifier.outputs.timestamp }}
+      timestamp: ${{ steps.set-unique-identifier.outputs.timestamp }}
       env_name: ${{ env.env_name }}
     steps:
       - name: Checkout Code
@@ -32,7 +32,7 @@ jobs:
   Setup:
     runs-on: [ubuntu-latest]
     outputs:
-      lambda-matrix: ${{ steps.set-lambda-matrix.outputs.matrix }}
+      lambda-matrix: ${{ steps.set-matrix-lambda.outputs.matrix }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
