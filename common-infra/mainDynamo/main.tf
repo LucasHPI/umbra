@@ -5,12 +5,12 @@ resource "aws_dynamodb_table" "umbraMainDynamo" {
     range_key = "patientName"
 
     attribute {
-      name = "oxygenation"
+      name = "docName"
       type = "S"
     }
 
     attribute {
-      name = "heartRate"
+      name = "patientName"
       type = "S"
     }
 

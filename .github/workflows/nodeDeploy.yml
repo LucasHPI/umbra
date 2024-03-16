@@ -7,6 +7,10 @@ on:
     paths:
       - node/**
 
+permissions:
+  id-token: write
+  contents: read
+
 env:
   env_name: "devl"
 
@@ -14,7 +18,7 @@ jobs:
   GetUniqueIdentifier:
     runs-on: [ubuntu-latest]
     outputs:
-      timestamp: ${{ steps-set-unique-identifier.outputs.timestamp }}
+      timestamp: ${{ steps.set-unique-identifier.outputs.timestamp }}
       env_name: ${{ env.env_name }}
     steps:
       - name: Checkout Code
@@ -28,7 +32,7 @@ jobs:
   Setup:
     runs-on: [ubuntu-latest]
     outputs:
-      lambda-matrix: ${{ steps.set-lambda-matrix.outputs.matrix }}
+      lambda-matrix: ${{ steps.set-matrix-lambda.outputs.matrix }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -41,7 +45,7 @@ jobs:
           echo $arr
           echo "::set-output name=matrix::$arr"
 
-  BuilNode:
+  BuildNode:
     runs-on: [ubuntu-latest]
     needs: [GetUniqueIdentifier, Setup]
     outputs:
@@ -79,9 +83,9 @@ jobs:
           cp -r src/*.js dist/ &&\
 
           cd dist &&\
-          find . -name "*.zip" -type -f -delete && \
+          find . -name "*.zip" -type f -delete && \
           zip -r ../${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip . &&\
-          cd .. & \
+          cd .. && \
           rm -rf dist
           mv ./${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip $GITHUB_WORKSPACE/
         
@@ -96,6 +100,7 @@ jobs:
     needs: [GetUniqueIdentifier, Setup, BuildNode]
     env: 
       TF_VAR_environment_name: ${{ needs.GetUniqueIdentifier.outputs.env_name }}
+      TF_VAR_execution_role: ${{ secrets.LAMBDA_EXECUTION_ROLE }}
     strategy:
       matrix:
         lambdas: ${{ fromJson(needs.Setup.outputs.lambda-matrix) }}
@@ -104,34 +109,34 @@ jobs:
         working-directory: node/${{ matrix.lambdas }}
     steps:
       - name: Checkout Code
-      uses: actions/checkout@v3
+        uses: actions/checkout@v3
 
-    - name: Assume IAM role
-      id: assume-role
-      uses: aws-actions/configure-aws-credentials@v2
-      with:
-        aws-role-to-assume: ${{ secrets.IAM_ROLE }}
-        aws-region: us-east-1
-        role-duration-seconds: 1200
-    
-    - name: Downloading Artifacts
-      uses: actions/download-artifact@v2
-      with: 
-        name: ${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip
-        path: node/${{ matrix/lambdas }}
-    
-    - name: Terraform Init
-      run: |
-        terraform init -backend-config "bucket=parallax-umbra-terraform-state-${{ env.env_name }}" -backend-config "dynamodb_table=parallax-umbra-terraform-lock-${{ env.env_name }}"
+      - name: Assume IAM role
+        id: assume-role
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          aws-region: us-east-1
+          role-duration-seconds: 1200
 
-    - name: Terraform Validate
-      run: |
-        terraform validate
+      - name: Downloading Artifacts
+        uses: actions/download-artifact@v2
+        with: 
+          name: ${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip
+          path: node/${{ matrix.lambdas }}
 
-    - name: Terraform Plan
-      run: |
-        terraform plan --out=tfplan -var lambdas_version="${{ needs.GetUniqueIdentifier.outputs.timestamp }}"
-    
-    - name: Terraform Apply
-      run: |
-        terraform apply "tfplan"
+      - name: Terraform Init
+        run: |
+          terraform init -backend-config "bucket=parallax-umbra-terraform-state-${{ env.env_name }}" -backend-config "dynamodb_table=parallax-umbra-terraform-lock-${{ env.env_name }}"
+
+      - name: Terraform Validate
+        run: |
+          terraform validate
+
+      - name: Terraform Plan
+        run: |
+          terraform plan --out=tfplan -var lambdas_version="${{ needs.GetUniqueIdentifier.outputs.timestamp }}"
+
+      - name: Terraform Apply
+        run: |
+          terraform apply "tfplan"
