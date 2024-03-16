@@ -37,13 +37,3 @@ resource "aws_apigatewayv2_stage" "patientInfoStage" {
     create_before_destroy = true
   }
 }
-
-resource "aws_apigatewayv2_authorizer" "patientInfoAuthorizer" {
-  name = "umbra-patient-info-authorizer"
-  api_id = aws_apigatewayv2_api.patientInfoGateway.id
-  authorizer_type = "JWT"
-  jwt_configuration {
-    issuer = "https://cognito-idp.${var.region}.amazonaws.com/${aws_cognito_user_pool.umbraUserPool.id}"
-    audience = [aws_cognito_user_pool_client.umbraUserPoolClient.id]
-  }
-}
