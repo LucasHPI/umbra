@@ -45,7 +45,7 @@ jobs:
           echo $arr
           echo "::set-output name=matrix::$arr"
 
-  BuilNode:
+  BuildNode:
     runs-on: [ubuntu-latest]
     needs: [GetUniqueIdentifier, Setup]
     outputs:
