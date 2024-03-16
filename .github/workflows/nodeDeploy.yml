@@ -100,7 +100,7 @@ jobs:
     needs: [GetUniqueIdentifier, Setup, BuildNode]
     env: 
       TF_VAR_environment_name: ${{ needs.GetUniqueIdentifier.outputs.env_name }}
-      TF_VAR_execution_role: ${{ secrets.IAM_ROLE }}
+      TF_VAR_execution_role: ${{ secrets.LAMBDA_EXECUTION_ROLE }}
     strategy:
       matrix:
         lambdas: ${{ fromJson(needs.Setup.outputs.lambda-matrix) }}
