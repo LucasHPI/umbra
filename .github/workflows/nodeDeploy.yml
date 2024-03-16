@@ -84,12 +84,9 @@ jobs:
 
           cd dist &&\
           find . -name "*.zip" -type f -delete && \
-          ls
           zip -r ../${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip . &&\
-          cd .. & \
-          ls
+          cd .. && \
           rm -rf dist
-          ls
           mv ./${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip $GITHUB_WORKSPACE/
         
       - name: Uploading Artifacts
