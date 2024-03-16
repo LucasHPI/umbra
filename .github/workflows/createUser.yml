@@ -1,0 +1,37 @@
+name: Create Cognito Users
+
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: "Username for the new user"
+        required: true
+      email:
+        description: "Email for the new user"
+        required: true
+      phone_number:
+        description: "Phone number for the new user"
+        required: true
+
+jobs:
+  create_user:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Assume IAM role
+        id: assume-role
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          aws-region: us-east-1
+          role-duration-seconds: 1200
+
+      - name: Generate Temporary Password
+        id: generate_password
+        run: echo "::set-output name=password::$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c16)"
+
+      - name: Create Cognito User
+        run: |
+          aws cognito-idp admin-create-user --user-pool-id ${{ secrets.COGNITO_POOL }} --username "${{ github.event.inputs.username }}" --temporary-password "${{ steps.generate_password.outputs.password }}" --user-attributes Name=email,Value="${{ github.event.inputs.email }}" Name=phone_number,Value="${{ github.event.inputs.phone_number }}"
