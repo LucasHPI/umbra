@@ -18,16 +18,6 @@ resource "aws_lambda_permission" "queryPatientInfoPermission" {
   source_arn = "${aws_apigatewayv2_api.patientInfoGateway.execution_arn}/*/*/*"
 }
 
-resource "aws_apigatewayv2_authorizer" "patientInfoAuthorizer" {
-  name = "umbra-patient-info-authorizer"
-  api_id = aws_apigatewayv2_api.patientInfoGateway.id
-  authorizer_type = "JWT"
-  jwt_configuration {
-    issuer = "https://cognito-idp.${var.region}.amazonaws.com/${aws_cognito_user_pool.umbraUserPool.id}"
-    audience = [aws_cognito_user_pool_client.umbraUserPoolClient.id]
-  }
-}
-
 resource "aws_apigatewayv2_integration" "queryPatientInfoIntegration" {
   api_id = aws_apigatewayv2_api.patientInfoGateway.id
   integration_type = "AWS_PROXY"
