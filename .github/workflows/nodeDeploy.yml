@@ -123,7 +123,7 @@ jobs:
         uses: actions/download-artifact@v2
         with: 
           name: ${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip
-          path: node/${{ matrix/lambdas }}
+          path: node/${{ matrix.lambdas }}
 
       - name: Terraform Init
         run: |
