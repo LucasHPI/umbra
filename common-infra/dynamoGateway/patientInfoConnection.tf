@@ -6,7 +6,7 @@ data "aws_lambda_function" "existing" {
 resource "aws_lambda_alias" "queryPatientInfoAlias" {
   name = "${var.prefix}-query-patient-info"
   description = "Alias to the query-patient-info"
-  function_name = data.aws_lambda_function.existing
+  function_name = data.aws_lambda_function.existing.function_name
   function_version = "$LATEST"
 }
 
