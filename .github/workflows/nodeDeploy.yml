@@ -83,7 +83,7 @@ jobs:
           cp -r src/*.js dist/ &&\
 
           cd dist &&\
-          find . -name "*.zip" -type -f -delete && \
+          find . -name "*.zip" -type f -delete && \
           zip -r ../${{ matrix.lambdas }}-${{ needs.GetUniqueIdentifier.outputs.timestamp }}.zip . &&\
           cd .. & \
           rm -rf dist
