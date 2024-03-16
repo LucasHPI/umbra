@@ -13,6 +13,7 @@ resource "aws_cognito_user_pool_client" "umbraUserPoolClient" {
   explicit_auth_flows    = ["USER_PASSWORD_AUTH"]
   allowed_oauth_flows    = ["implicit"]
   allowed_oauth_scopes   = ["openid"]
+  callback_urls = [ aws_apigatewayv2_api.patientInfoGateway.api_endpoint ]
 }
 
 resource "aws_apigatewayv2_api" "patientInfoGateway" {
