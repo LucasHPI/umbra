@@ -17,7 +17,7 @@ jobs:
   create_user:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Assume IAM role
