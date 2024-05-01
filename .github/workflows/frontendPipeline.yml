@@ -1,0 +1,40 @@
+name: Frontend Deploy Workflow
+
+on:
+  push:
+    branches:
+      - devl
+    paths:
+      - frontend/**
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  env_name: devl
+
+jobs:
+  Deploy:
+    runs-on:
+      - ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Assume IAM role
+        id: assume-role
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.IAM_ROLE }}
+          aws-region: us-east-1
+          role-duration-seconds: 1200
+    
+      - name: Build React App
+        run: npm install && npm run build
+
+      - name: Deploy App to S3 Bucket
+        run: aws s3 sync ./dist/ s3://parallax-umbra-frontend-devl --delete
