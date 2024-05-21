@@ -16,6 +16,7 @@ resource "aws_lambda_function" "queryPatientInformation" {
   role = var.execution_role
   timeout = 60
   filename = "queryPatientInformation-${var.lambdas_version}.zip"
+  publish = true
 
   environment {
     variables = {
