@@ -1,7 +1,6 @@
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { APIGatewayEvent, APIGatewayProxyResult } from "aws-lambda";
 import {
-  PutCommand,
   DynamoDBDocumentClient,
   ScanCommand,
   ScanCommandInput,
@@ -10,16 +9,16 @@ import {
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
-  if (event["httpMethod"] == "OPTIONS") {
+
+  const queryParams = event.queryStringParameters
+  
+  if(!queryParams) {
     return {
-      statusCode: 200,
-      body: "Options Success",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "*",
-        "Access-Control-Allow-Headers": "*",
-      },
-    };
+      statusCode: 500,
+      body: JSON.stringify({
+        response: 'Patient not specified',
+      })
+    }
   }
 
   try {
@@ -30,7 +29,7 @@ export const handler = async (
       TableName: `parallax-umbra-main-${process.env.environment}`,
       FilterExpression: "docName = :practionerName",
       ExpressionAttributeValues: {
-        ":practionerName": "Cristiana",
+        ":patientName": queryParams.patientName,
       },
     };
 
@@ -42,12 +41,7 @@ export const handler = async (
       statusCode: 200,
       body: JSON.stringify({
         response: result.Items,
-      }),
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "Content-Type, Authorization",
-        "Access-Control-Allow-Headers": "GET, POST",
-      },
+      })
     };
   } catch (e) {
     console.error("Error: ", e)
