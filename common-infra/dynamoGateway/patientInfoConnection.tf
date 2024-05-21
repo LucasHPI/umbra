@@ -15,9 +15,9 @@ resource "aws_apigatewayv2_integration" "queryPatientInfoIntegration" {
   api_id = aws_apigatewayv2_api.patientInfoGateway.id
   integration_type = "AWS_PROXY"
   passthrough_behavior = "WHEN_NO_MATCH"
-  description = ""
-  integration_method = "POST"
-  integration_uri = data.aws_lambda_function.existing.arn
+  description = "Getting patient info"
+  integration_method = "GET"
+  integration_uri = data.aws_lambda_function.existing.invoke_arn
   payload_format_version = "2.0"
 }
 
