@@ -6,6 +6,11 @@ resource "aws_cognito_user_pool" "umbraUserPool" {
   name = "umbra-user-pool"
 }
 
+resource "aws_cognito_user_pool_domain" "main" {
+  domain       = "example-domain"
+  user_pool_id = aws_cognito_user_pool.umbraUserPool.id
+}
+
 resource "aws_cognito_user_pool_client" "umbraUserPoolClient" {
   name                   = "umbra-client"
   user_pool_id           = aws_cognito_user_pool.umbraUserPool.id
