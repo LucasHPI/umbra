@@ -7,7 +7,7 @@ resource "aws_cognito_user_pool" "umbraUserPool" {
 }
 
 resource "aws_cognito_user_pool_domain" "main" {
-  domain       = "example-domain"
+  domain       = "umbra-auth-domain"
   user_pool_id = aws_cognito_user_pool.umbraUserPool.id
 }
 
