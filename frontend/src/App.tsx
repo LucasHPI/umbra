@@ -1,10 +1,22 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import axios from "axios";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const userInfoEndpoint: string = import.meta.env.VITE_USER_INFO_ENDPOINT;
+  const name = "Mirosmar";
+  const [count, setCount] = useState(0);
+  const [patientInfo, setPatientInfo] = useState<string[]>([]);
+
+  useEffect(() => {
+    axios
+      .get(`${userInfoEndpoint}/retrieveUserInfo?patientName=${name}}`)
+      .then((response) => {
+        setPatientInfo(response.data);
+      });
+  });
 
   return (
     <>
@@ -18,7 +30,12 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button
+          onClick={() => {
+            setCount((count) => count + 1);
+            console.log(patientInfo);
+          }}
+        >
           count is {count}
         </button>
         <p>
@@ -29,7 +46,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

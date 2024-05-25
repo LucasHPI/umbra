@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3.577.0",
+    "@aws-sdk/lib-storage": "^3.578.0",
+    "@smithy/types": "^3.0.0",
+    "@types/aws-lambda": "^8.10.138",
+    "@types/node": "^20.12.12"
+  }
+}
