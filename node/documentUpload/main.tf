@@ -15,7 +15,7 @@ resource "aws_lambda_function" "queryPatientInformation" {
   runtime = "nodejs18.x"
   role = var.execution_role
   timeout = 60
-  filename = "queryPatientInformation-${var.lambdas_version}.zip"
+  filename = "documentUpload-${var.lambdas_version}.zip"
 
   environment {
     variables = {
