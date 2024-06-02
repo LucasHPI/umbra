@@ -16,7 +16,7 @@ variable "lambda_name" {
 
 variable "document_bucket_name" {
   type = string
-  default = "patient-document-bucket-${var.environment_name}" //When all resources are in the same folder reference resource instead of variable
+  default = "patient-document-bucket-${environment_name}"
 }
 
 variable "region" {
