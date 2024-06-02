@@ -21,7 +21,7 @@ resource "aws_apigatewayv2_integration" "saveMeasurementsIntegration" {
   payload_format_version = "2.0"
 }
 
-resource "aws_apigatewayv2_route" "queryPatientInfo" {
+resource "aws_apigatewayv2_route" "saveMeasurements" {
   api_id = aws_apigatewayv2_api.patientInfoGateway.id
   route_key = "POST /savemeasurements"
   target = "integrations/${aws_apigatewayv2_integration.saveMeasurementsIntegration.id}"
