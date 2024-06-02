@@ -20,7 +20,7 @@ resource "aws_lambda_function" "queryPatientInformation" {
   environment {
     variables = {
       environment = var.environment_name
-      document_bucket = var.document_bucket_name
+      document_bucket = "${var.document_bucket_name}-${var.environment_name}"
     }
   }
 }

@@ -16,7 +16,7 @@ variable "lambda_name" {
 
 variable "document_bucket_name" {
   type = string
-  default = "patient-document-bucket-${environment_name}"
+  default = "patient-document-bucket"
 }
 
 variable "region" {
