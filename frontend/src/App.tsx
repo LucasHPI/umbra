@@ -1,50 +1,53 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import axios from "axios";
+import { useState } from "react";
+import Header from "./components/Header";
+import SideDrawer from "./components/SideDrawer";
+import { Box, Typography } from "@mui/material";
+//import axios from "axios";
 
 function App() {
-  const userInfoEndpoint: string = import.meta.env.VITE_USER_INFO_ENDPOINT;
-  const name = "Mirosmar";
-  const [count, setCount] = useState(0);
-  const [patientInfo, setPatientInfo] = useState<string[]>([]);
+  //const userInfoEndpoint: string = import.meta.env.VITE_USER_INFO_ENDPOINT;
+  //const name = "Mirosmar";
+  //const [patientInfo, setPatientInfo] = useState<string[]>([]);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     axios
       .get(`${userInfoEndpoint}/retrieveUserInfo?patientName=${name}}`)
       .then((response) => {
         setPatientInfo(response.data);
       });
-  });
+  }); */
+  const drawerWidth = 240;
+  const [isClosing, setIsClosing] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const userName = "Mirosmar";
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button
-          onClick={() => {
-            setCount((count) => count + 1);
-            console.log(patientInfo);
-          }}
-        >
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Header
+        isClosing={isClosing}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+      />
+      <SideDrawer
+        mobileOpen={mobileOpen}
+        setIsClosing={setIsClosing}
+        setMobileOpen={setMobileOpen}
+      />
+      <Box
+        component="div"
+        sx={{
+          marginLeft: isClosing ? "0px" : `${drawerWidth}px`,
+          marginTop: "64px",
+          minHeight: `100vh`,
+          minWidth: "100vw",
+          display: "flex"
+        }}
+      >
+        <Box sx={{marginLeft: "48px", marginTop: `${48}px`}}>
+          <Typography variant="h3">Welcome, {userName}</Typography>
+          
+        </Box>
+      </Box>
     </>
   );
 }
