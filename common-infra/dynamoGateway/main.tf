@@ -43,7 +43,7 @@ resource "aws_apigatewayv2_stage" "patientInfoStage" {
   }
 }
 
-resource "aws_apigatewayv2_authorizer" "patientInfoAuthorizer" {
+/* resource "aws_apigatewayv2_authorizer" "patientInfoAuthorizer" {
   name = "umbra-patient-info-authorizer"
   api_id = aws_apigatewayv2_api.patientInfoGateway.id
   authorizer_type = "JWT"
@@ -52,4 +52,4 @@ resource "aws_apigatewayv2_authorizer" "patientInfoAuthorizer" {
     audience = [aws_cognito_user_pool_client.umbraUserPoolClient.id]
   }
   identity_sources = ["$request.header.Authorization"]
-}
+} */
