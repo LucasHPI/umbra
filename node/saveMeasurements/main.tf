@@ -15,12 +15,12 @@ resource "aws_lambda_function" "queryPatientInformation" {
   runtime = "nodejs18.x"
   role = var.execution_role
   timeout = 60
-  filename = "documentUpload-${var.lambdas_version}.zip"
+  filename = "saveMeasurements-${var.lambdas_version}.zip"
+  publish = true
 
   environment {
     variables = {
       environment = var.environment_name
-      document_bucket = "${var.document_bucket_name}-${var.environment_name}"
     }
   }
 }

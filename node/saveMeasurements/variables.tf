@@ -11,12 +11,7 @@ variable "prefix" {
 
 variable "lambda_name" {
     type = string
-    default = "umbra-manipulate-documents-info"
-}
-
-variable "document_bucket_name" {
-  type = string
-  default = "patient-document-bucket"
+    default = "umbra-save-measurements"
 }
 
 variable "region" {

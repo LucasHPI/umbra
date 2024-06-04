@@ -1,4 +1,3 @@
-
 data "aws_lambda_function" "existing" {
   function_name = "parallax-umbra-query-patient-info-${var.environment_name}"
 }
