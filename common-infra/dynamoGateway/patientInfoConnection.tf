@@ -26,6 +26,6 @@ resource "aws_apigatewayv2_route" "queryPatientInfo" {
   route_key = "POST /querypatientinfo"
   target = "integrations/${aws_apigatewayv2_integration.queryPatientInfoIntegration.id}"
 
-  authorizer_id = aws_apigatewayv2_authorizer.patientInfoAuthorizer.id
-  authorization_type = "JWT"
+/*   authorizer_id = aws_apigatewayv2_authorizer.patientInfoAuthorizer.id
+  authorization_type = "JWT" */
 }
