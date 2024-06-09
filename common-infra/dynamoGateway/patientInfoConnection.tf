@@ -18,7 +18,6 @@ resource "aws_apigatewayv2_integration" "queryPatientInfoIntegration" {
   description = "Getting patient info"
   integration_method = "POST"
   integration_uri = data.aws_lambda_function.existing.invoke_arn
-  payload_format_version = "2.0"
 }
 
 resource "aws_apigatewayv2_route" "queryPatientInfo" {

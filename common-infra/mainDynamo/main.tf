@@ -1,11 +1,11 @@
 resource "aws_dynamodb_table" "umbraMainDynamo" {
     name = "${var.prefix}-${var.dynamo_name}-${var.environment_name}"
     billing_mode = "PAY_PER_REQUEST"
-    hash_key = "docName"
+    hash_key = "practitionerName"
     range_key = "patientName"
 
     attribute {
-      name = "docName"
+      name = "practitionerName"
       type = "S"
     }
 
@@ -23,7 +23,7 @@ resource "aws_dynamodb_table" "umbraMainDynamo" {
       name = "timestampIndex"
       hash_key = "timestamp"
       projection_type = "INCLUDE"
-      non_key_attributes = [ "docName", "patientName" ]
+      non_key_attributes = [ "practitionerName", "patientName" ]
     }
 
     tags = {
