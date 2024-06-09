@@ -20,7 +20,7 @@ resource "aws_apigatewayv2_integration" "saveMeasurementsIntegration" {
   passthrough_behavior = "WHEN_NO_MATCH"
   description = "Getting patient info"
   integration_method = "POST"
-  integration_uri = aws_lambda_alias.savePatientInfoAlias.name
+  integration_uri = aws_lambda_alias.savePatientInfoAlias.invoke_arn
   payload_format_version = "2.0"
 }
 
