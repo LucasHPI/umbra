@@ -27,7 +27,7 @@ export const handler = async (
 
     const scanParameters: ScanCommandInput = {
       TableName: `parallax-umbra-main-${process.env.environment}`,
-      FilterExpression: "docName = :practitionerName'",
+      FilterExpression: "patientName = :patientName",
       ExpressionAttributeValues: {
         ":patientName": queryParams.patientName,
       },
