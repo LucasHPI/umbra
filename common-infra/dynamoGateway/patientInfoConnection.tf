@@ -23,7 +23,7 @@ resource "aws_apigatewayv2_integration" "queryPatientInfoIntegration" {
 
 resource "aws_apigatewayv2_route" "queryPatientInfo" {
   api_id = aws_apigatewayv2_api.patientInfoGateway.id
-  route_key = "get /querypatientinfo"
+  route_key = "GET /querypatientinfo"
   target = "integrations/${aws_apigatewayv2_integration.queryPatientInfoIntegration.id}"
 
 /*   authorizer_id = aws_apigatewayv2_authorizer.patientInfoAuthorizer.id
