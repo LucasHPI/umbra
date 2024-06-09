@@ -27,10 +27,7 @@ export const handler = async (
 
     const scanParameters: PutCommandInput = {
       TableName: `parallax-umbra-main-${process.env.environment}`,
-      Item: measurements,
-      ExpressionAttributeValues: {
-        ":patientName": measurements.patientName,
-      },
+      Item: measurements
     };
 
     const scanCommand = new PutCommand(scanParameters);
