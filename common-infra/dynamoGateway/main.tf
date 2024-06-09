@@ -2,25 +2,6 @@ provider "aws" {
   region = "us-east-1"
 }
 
-resource "aws_cognito_user_pool" "umbraUserPool" {
-  name = "umbra-user-pool"
-}
-
-resource "aws_cognito_user_pool_domain" "main" {
-  domain       = "umbra-auth-domain"
-  user_pool_id = aws_cognito_user_pool.umbraUserPool.id
-}
-
-resource "aws_cognito_user_pool_client" "umbraUserPoolClient" {
-  name                   = "umbra-client"
-  user_pool_id           = aws_cognito_user_pool.umbraUserPool.id
-  generate_secret        = true
-  explicit_auth_flows    = ["USER_PASSWORD_AUTH"]
-  allowed_oauth_flows    = ["implicit"]
-  allowed_oauth_scopes   = ["openid"]
-  callback_urls = [ aws_apigatewayv2_api.patientInfoGateway.api_endpoint ]
-}
-
 resource "aws_apigatewayv2_api" "patientInfoGateway" {
   name = "${var.prefix}-${var.gateway_name}-${var.environment_name}"
   description = "API Gateway for umbra-${var.environment_name}"
@@ -52,4 +33,24 @@ resource "aws_apigatewayv2_stage" "patientInfoStage" {
     audience = [aws_cognito_user_pool_client.umbraUserPoolClient.id]
   }
   identity_sources = ["$request.header.Authorization"]
+} */
+
+
+/* resource "aws_cognito_user_pool" "umbraUserPool" {
+  name = "umbra-user-pool"
+}
+
+resource "aws_cognito_user_pool_domain" "main" {
+  domain       = "umbra-auth-domain"
+  user_pool_id = aws_cognito_user_pool.umbraUserPool.id
+}
+
+resource "aws_cognito_user_pool_client" "umbraUserPoolClient" {
+  name                   = "umbra-client"
+  user_pool_id           = aws_cognito_user_pool.umbraUserPool.id
+  generate_secret        = true
+  explicit_auth_flows    = ["USER_PASSWORD_AUTH"]
+  allowed_oauth_flows    = ["implicit"]
+  allowed_oauth_scopes   = ["openid"]
+  callback_urls = [ aws_apigatewayv2_api.patientInfoGateway.api_endpoint ]
 } */
