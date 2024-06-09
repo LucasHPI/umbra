@@ -11,7 +11,7 @@ resource "aws_lambda_permission" "queryPatientInfoPermission" {
   function_name = "${aws_lambda_alias.getPatientInfoAlias.function_name}:${aws_lambda_alias.getPatientInfoAlias.name}"
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_apigatewayv2_api.patientInfoGateway.execution_arn}/*/*/*"
-  qualifier = aws_lambda_alias.getPatientInfoAlias.function_version
+  qualifier = aws_lambda_alias.getPatientInfoAlias.name
 }
 
 resource "aws_apigatewayv2_integration" "queryPatientInfoIntegration" {
