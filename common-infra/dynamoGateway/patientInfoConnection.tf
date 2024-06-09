@@ -8,7 +8,7 @@ resource "aws_lambda_alias" "getPatientInfoAlias" {
 resource "aws_lambda_permission" "queryPatientInfoPermission" {
   statement_id = "AllowExecutionFromAPIGateway"
   action = "lambda:InvokeFunction"
-  function_name = "${aws_lambda_alias.queryPatientInformation.function_name}:${aws_lambda_alias.getPatientInfoAlias.name}"
+  function_name = "${aws_lambda_alias.getPatientInfoAlias.function_name}:${aws_lambda_alias.getPatientInfoAlias.name}"
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_apigatewayv2_api.patientInfoGateway.execution_arn}/*/*/*"
   qualifier = aws_lambda_alias.getPatientInfoAlias.function_version
