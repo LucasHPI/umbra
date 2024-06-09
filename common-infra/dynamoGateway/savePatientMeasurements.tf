@@ -26,7 +26,7 @@ resource "aws_apigatewayv2_integration" "saveMeasurementsIntegration" {
 
 resource "aws_apigatewayv2_route" "saveMeasurements" {
   api_id = aws_apigatewayv2_api.patientInfoGateway.id
-  route_key = "GET /savemeasurements"
+  route_key = "POST /savemeasurements"
   target = "integrations/${aws_apigatewayv2_integration.saveMeasurementsIntegration.id}"
 
 /*   authorizer_id = aws_apigatewayv2_authorizer.patientInfoAuthorizer.id
