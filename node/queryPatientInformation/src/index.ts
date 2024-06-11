@@ -15,6 +15,10 @@ export const handler = async (
   if(!queryParams) {
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Update this to match the domain you want to allow or keep it as '*' to allow all domains
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({
         response: 'Patient not specified',
       })
@@ -39,6 +43,10 @@ export const handler = async (
 
     return {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Update this to match the domain you want to allow or keep it as '*' to allow all domains
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify({
         response: result.Items,
       })
