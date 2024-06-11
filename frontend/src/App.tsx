@@ -23,7 +23,7 @@ type HeartRateResponse = {
 };
 
 function App() {
-  const userInfoEndpoint: string = import.meta.env.VITE_USER_INFO_ENDPOINT;
+  //const userInfoEndpoint: string = import.meta.env.VITE_USER_INFO_ENDPOINT;
   const name = "Mirosmar";
   const [patientInfo, setPatientInfo] = useState<HeartRateResponse>({
     response: [],
@@ -33,7 +33,7 @@ function App() {
     const fetchData = async () => {
       // Add async keyword here
       await axios
-        .get(`${userInfoEndpoint}/querypatientinfo?patientName=${name}`)
+        .get(`https://ufdhawgryi.execute-api.us-east-1.amazonaws.com/umbra-devl/querypatientinfo?patientName=${name}`)
         .then((response) => {
           setPatientInfo(response.data);
         });
