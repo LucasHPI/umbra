@@ -24,7 +24,6 @@ type HeartRateResponse = {
 
 function App() {
   //const userInfoEndpoint: string = import.meta.env.VITE_USER_INFO_ENDPOINT;
-  const name = "Mirosmar";
   const [patientInfo, setPatientInfo] = useState<HeartRateResponse>({
     response: [],
   });
