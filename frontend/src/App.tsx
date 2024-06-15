@@ -33,7 +33,7 @@ function App() {
     const fetchData = async () => {
       // Add async keyword here
       await axios
-        .get(`https://ufdhawgryi.execute-api.us-east-1.amazonaws.com/umbra-devl/querypatientinfo?patientName=${name}`)
+        .get(`https://ufdhawgryi.execute-api.us-east-1.amazonaws.com/umbra-devl/querypatientinfo`)
         .then((response) => {
           setPatientInfo(response.data);
         });

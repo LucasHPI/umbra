@@ -9,33 +9,25 @@ import {
 export const handler = async (
   event: APIGatewayEvent
 ): Promise<APIGatewayProxyResult> => {
-
-  const queryParams = event.queryStringParameters
-  
-  if(!queryParams) {
-    return {
-      statusCode: 500,
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Update this to match the domain you want to allow or keep it as '*' to allow all domains
-        'Access-Control-Allow-Credentials': true,
-      },
-      body: JSON.stringify({
-        response: 'Patient not specified',
-      })
-    }
-  }
+  const queryParams = event.queryStringParameters;
 
   try {
     const dynamoClient = new DynamoDBClient({ region: "us-east-1" });
     const docClient = DynamoDBDocumentClient.from(dynamoClient);
 
-    const scanParameters: ScanCommandInput = {
+    let scanParameters: ScanCommandInput = {
       TableName: `parallax-umbra-main-${process.env.environment}`,
-      FilterExpression: "patientName = :patientName",
-      ExpressionAttributeValues: {
-        ":patientName": queryParams.patientName,
-      },
     };
+
+    if (queryParams && queryParams.patientName) {
+      scanParameters = {
+        ...scanParameters,
+        FilterExpression: "patientName = :patientName",
+        ExpressionAttributeValues: {
+          ":patientName": queryParams.patientName,
+        },
+      };
+    }
 
     const scanCommand = new ScanCommand(scanParameters);
     const result = await docClient.send(scanCommand);
@@ -52,7 +44,16 @@ export const handler = async (
       })
     };
   } catch (e) {
-    console.error("Error: ", e)
-    throw e;
+    console.error("Error: ", e);
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Update this to match the domain you want to allow or keep it as '*' to allow all domains
+        'Access-Control-Allow-Credentials': true,
+      },
+      body: JSON.stringify({
+        response: 'An error occurred while scanning the table',
+      })
+    };
   }
 };
